@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crewfactory.main.dao.HumanResourceDao">
+
+	<select id="select" parameterType="String" resultType="com.crewfactory.main.domain.HumanResourceDomain">
+		select 
+			idx,
+			catenum,
+			korname,
+			engname,
+			photo,
+			phoneagency,
+			phonefirst,
+			phonesecond,
+			email,
+			birthyear,
+			birthmonth,
+			birthday,
+			height,
+			weight,
+			gender,
+			nation,
+			address,
+			edulv,
+			gradlv,
+			langlv,
+			skilllv,
+			introduce,
+			concat(birthyear, birthmonth, birthday) as birth,
+			concat(phoneagency, phonefirst, phonesecond) as phonenum
+		from hrresource
+		where catenum = #{catenum} 
+	</select>
+	
+	<select id="view" parameterType="int" resultType="com.crewfactory.main.domain.HumanResourceDomain">
+		select 
+			idx,
+			catenum,
+			korname,
+			engname,
+			photo,
+			phoneagency,
+			phonefirst,
+			phonesecond,
+			email,
+			birthyear,
+			birthmonth,
+			birthday,
+			height,
+			weight,
+			gender,
+			nation,
+			address,
+			edulv,
+			edugb,
+			gradlv,
+			langlv,
+			skilllv,
+			introduce,
+			reference,
+			concat(birthyear, birthmonth, birthday) as birth,
+			concat(phoneagency, phonefirst, phonesecond) as phonenum,
+			resultgb,
+			interviewday,
+			interviewaddr,
+			memotxt
+		from hrresource
+		where idx = #{idx} 
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from hrresource
+		where idx = #{idx} 
+	</delete>
+	
+	<update id="update" parameterType="com.crewfactory.main.domain.HumanResourceDomain">
+        update hrresource
+			set
+			resultgb = #{ resultgb },
+			interviewday = #{ interviewday },
+			interviewaddr = #{ interviewaddr },
+			memotxt = #{ memotxt }
+		where idx = #{idx};
+    </update> 
+
+	<insert id="insert" parameterType="com.crewfactory.main.domain.HumanResourceDomain">
+		insert into hrresource (
+			idx,
+			catenum,
+			korname,
+			engname,
+			photo,
+			phoneagency,
+			phonefirst,
+			phonesecond,
+			email,
+			birthyear,
+			birthmonth,
+			birthday,
+			height,
+			weight,
+			gender,
+			nation,
+			address,
+			edulv,
+			gradlv,
+			edugb,
+			langlv,
+			skilllv,
+			reference,
+			introduce,
+			regdate,
+			regip
+		) values (
+			(select ifnull(max(idx)+1, 1) from hrresource a), 
+			#{catenum},
+			#{korname},
+			#{engname},
+			#{photo},
+			#{phoneagency},
+			#{phonefirst},
+			#{phonesecond},
+			#{email},
+			#{birthyear},
+			#{birthmonth},
+			#{birthday},
+			#{height},
+			#{weight},
+			#{gender},
+			#{nation},
+			#{address},
+			#{edulv},
+			#{gradlv},
+			#{edugb},
+			#{langlv},
+			#{skilllv},
+			#{reference},
+			#{introduce},
+			now(),
+			''
+		)
+	</insert>
+
+</mapper>
