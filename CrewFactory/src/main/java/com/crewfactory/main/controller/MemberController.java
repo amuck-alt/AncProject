@@ -2,6 +2,7 @@ package com.crewfactory.main.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crewfactory.main.domain.MemberDomain;
@@ -69,17 +70,22 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	@RequestMapping(value="/member/joinCheck.do")
+	@PostMapping(value="/member/joinCheck.do")
 	String joinCheck(@ModelAttribute("@join") MemberDomain domain, Model model, HttpSession session, HttpServletRequest request) throws Exception {
-		logger.info("member join ================== " + domain.toString());		
-		member.insert(domain);
-		model.addAttribute("join_result", "succeed");
-//		if(result > 0) {
-//			session.setAttribute("crewfactoryMemberInfo", domain.toString());
-//			model.addAttribute("result", "succeed");
-//		}else {
-//			model.addAttribute("result", "failed");
-//		}	
+				
+		String name = domain.getUsernm();
+		String age = domain.getAge();
+		String mobile = domain.getMobile();
+		
+		if(mobile != null || !("").equals(mobile)) {
+			if(isKorChar(name) && isNumberic(mobile) && isNumberic(age)) {
+				member.insert(domain);
+				model.addAttribute("join_result", "succeed");
+			} else {
+				model.addAttribute("join_result", "failed");
+				return "/include/fail";
+			}
+		}
 				
 		return "member/login";
 	}
@@ -92,7 +98,7 @@ public class MemberController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/member/checkId.do", method=RequestMethod.POST)
+	@PostMapping(value="/member/checkId.do")
 	public Map <String, Object> checkId (@RequestBody HashMap<String, Object> map, HttpServletResponse response) throws Exception {
 		logger.info("======================== request member check ==========================");
 		logger.info("data ============ " + map);
@@ -111,6 +117,14 @@ public class MemberController {
 			overlap.put("value", false);
 		}
 		return overlap;		
+	}
+	
+	public static boolean isKorChar(String word) {
+		return Pattern.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*", word);
+	}
+	
+	public static boolean isNumberic(String str) {
+        return str.matches("[+-]?\\d*(\\.\\d+)?");
 	}
 
 }
