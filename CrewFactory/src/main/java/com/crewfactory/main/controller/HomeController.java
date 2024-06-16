@@ -102,6 +102,48 @@ public class HomeController {
 				model.addAttribute("reply", reply.selectByWebHome());
 				return "index";
 		}
+		
+		/*
+		final String userAgent = request.getHeader("User-Agent");
+		
+		if (session.getAttribute("wwwcrewfactorycom_lading_session") != null) {
+		 model.addAttribute("landing", "Y");
+		} else {
+		    model.addAttribute("landing", "N");
+		}
+		
+		if (userAgent.indexOf("iPhone") != -1 || userAgent.indexOf("iPad") != -1 || 
+				userAgent.indexOf("Android") != -1 || userAgent.indexOf("BlackBerry") != -1 || 
+				userAgent.indexOf("symbian") != -1 || userAgent.indexOf("sony") != -1 || userAgent.indexOf("Mobile") != -1) {
+			model.addAttribute("blogko", blog.selectBlogKoByHome());
+			model.addAttribute("blogos", blog.selectBlogOsByHome());
+			model.addAttribute("reviewKe", review.selectKe());
+			model.addAttribute("reviewOz", review.selectOz());
+			model.addAttribute("reviewKo", review.selectKo());
+			model.addAttribute("reviewEa", review.selectEa());
+			model.addAttribute("reviewEu", review.selectEu());
+			model.addAttribute("reviewAs", review.selectAs());
+			model.addAttribute("announce", announce.selectNew());
+			model.addAttribute("moment", blog.selectMomentByHome());
+			model.addAttribute("professor", professor.selectByWebHome());
+			model.addAttribute("reply", reply.selectByWebHome());
+			return "mobile";
+		} else {
+			model.addAttribute("blogko", blog.selectBlogKoByHome());
+			model.addAttribute("blogos", blog.selectBlogOsByHome());
+			model.addAttribute("reviewKe", review.selectKe());
+			model.addAttribute("reviewOz", review.selectOz());
+			model.addAttribute("reviewKo", review.selectKo());
+			model.addAttribute("reviewEa", review.selectEa());
+			model.addAttribute("reviewEu", review.selectEu());
+			model.addAttribute("reviewAs", review.selectAs());
+			model.addAttribute("announce", announce.selectNew());
+			model.addAttribute("moment", blog.selectMomentByHome());
+			model.addAttribute("professor", professor.selectByWebHome());
+			model.addAttribute("reply", reply.selectByWebHome());
+			return "index";
+		}
+		*/
 	}
 	
 	
