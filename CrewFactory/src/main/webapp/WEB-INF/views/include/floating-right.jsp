@@ -125,7 +125,7 @@
 								<div class="input-group">
 									<input type="text" class="form-control" name="quick_name" id="quick_name" onkeyup="onlyKorean('quick_name')" placeholder="이름" maxlength="10" data-error="이름을 정확히 입력하세요" required>
 									<span class="py-3 input-group-append mx-4">나이</span> 
-									<input type="text" class="form-control input-group-append mr-2" oninput="maxLengthCheck(this)" name="quick_age" id="quick_age" data-error="나이를 정확히 입력하세요"  maxlength="2" placeholder="나이" required>
+									<input type="number" class="form-control input-group-append mr-2" oninput="maxLengthCheck(this)" name="quick_age" id="quick_age" data-error="나이를 정확히 입력하세요"  maxlength="2" placeholder="나이" required>
 									<div class="help-block with-errors text-danger"></div>
 								</div>
 							</div>
@@ -137,8 +137,8 @@
 									<select class="form-control mr-2" id="quick_mobile-1" style="height: 3.75rem;">
 										<option value="010">010</option>
 									</select> 
-									<input type="text" class="form-control input-group-append mr-2" oninput="maxLengthCheck(this)" name="quick_mobile-2" id="quick_mobile-2" required maxlength="4" placeholder="앞번호" data-error="연락처를 정확히 입력하세요" > 
-									<input type="text" class="form-control input-group-append" oninput="maxLengthCheck(this)" name="quick_mobile-3" id="quick_mobile-3" required maxlength="4" placeholder="뒷번호" data-error="연락처를 정확히 입력하세요">
+									<input type="number" class="form-control input-group-append mr-2" oninput="maxLengthCheck(this)" name="quick_mobile-2" id="quick_mobile-2" required maxlength="4" placeholder="앞번호" data-error="연락처를 정확히 입력하세요" > 
+									<input type="number" class="form-control input-group-append" oninput="maxLengthCheck(this)" name="quick_mobile-3" id="quick_mobile-3" required maxlength="4" placeholder="뒷번호" data-error="연락처를 정확히 입력하세요">
 								</div>
 								<div class="help-block with-errors text-danger"></div>
 							</div>

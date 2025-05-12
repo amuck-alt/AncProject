@@ -1,21 +1,5 @@
 package com.crewfactory.main.controller;
 
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-
-
 import com.crewfactory.main.domain.SearchDomain;
 import com.crewfactory.main.service.AnnounceService;
 import com.crewfactory.main.service.AuthService;
@@ -27,168 +11,113 @@ import com.crewfactory.main.service.RecruitService;
 import com.crewfactory.main.service.ReplyService;
 import com.crewfactory.main.service.ReviewService;
 import com.crewfactory.main.service.VanalyzerService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	@Autowired
-	AuthService auth;
-	
-	@Autowired
-	RecruitService recruit;
-	
-	@Autowired
-	BlogService blog;
-	
-	@Autowired
-	ReviewService review;
-	
-	@Autowired
-	AnnounceService announce;
-	
-	@Autowired
-	CounterService counter;
-	
-	@Autowired
-	VanalyzerService vanalyzer;
-	
-	@Autowired
-	ProfessorService professor;
-	
-	@Autowired
-	IPBlockService ipblock;
-	
-	@Autowired
-	ReplyService reply;
-	
-	@RequestMapping(value="/")
-	String init(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
-		
-		String ip = request.getHeader("X-FORWARDED-FOR");
-		if (ip == null)	ip = request.getRemoteAddr();
-		
-		int checkBlock = ipblock.checkBlock(ip);
-		
-		if(checkBlock > 0) {
-			return "block";
-		}else {
-			
-			/*
-			 * if (session.getAttribute("wwwcrewfactorycom_lading_session") == null) {
-			 * session.setAttribute("wwwcrewfactorycom_lading_session",
-			 * request.getRemoteAddr()); model.addAttribute("reviewBest",
-			 * review.selectBest()); model.addAttribute("professor",
-			 * professor.selectByWebHome()); return "landing"; } else {
-			 */
-			
-			if (session.getAttribute("wwwcrewfactorycom_lading_session") != null) {
-				model.addAttribute("landing", "Y");
-			} else {
-				model.addAttribute("landing", "N");
-			}
-				model.addAttribute("blogko", blog.selectBlogKoByHome());
-				model.addAttribute("blogos", blog.selectBlogOsByHome());
-				model.addAttribute("reviewKe", review.selectKe());
-				model.addAttribute("reviewOz", review.selectOz());
-				model.addAttribute("reviewKo", review.selectKo());
-				model.addAttribute("reviewEa", review.selectEa());
-				model.addAttribute("reviewEu", review.selectEu());
-				model.addAttribute("reviewAs", review.selectAs());	
-				model.addAttribute("announce", announce.selectNew());
-				model.addAttribute("moment", blog.selectMomentByHome() );			
-				model.addAttribute("professor", professor.selectByWebHome());
-				model.addAttribute("reply", reply.selectByWebHome());
-				return "index";
-		}
-		
-		/*
-		final String userAgent = request.getHeader("User-Agent");
-		
-		if (session.getAttribute("wwwcrewfactorycom_lading_session") != null) {
-		 model.addAttribute("landing", "Y");
-		} else {
-		    model.addAttribute("landing", "N");
-		}
-		
-		if (userAgent.indexOf("iPhone") != -1 || userAgent.indexOf("iPad") != -1 || 
-				userAgent.indexOf("Android") != -1 || userAgent.indexOf("BlackBerry") != -1 || 
-				userAgent.indexOf("symbian") != -1 || userAgent.indexOf("sony") != -1 || userAgent.indexOf("Mobile") != -1) {
-			model.addAttribute("blogko", blog.selectBlogKoByHome());
-			model.addAttribute("blogos", blog.selectBlogOsByHome());
-			model.addAttribute("reviewKe", review.selectKe());
-			model.addAttribute("reviewOz", review.selectOz());
-			model.addAttribute("reviewKo", review.selectKo());
-			model.addAttribute("reviewEa", review.selectEa());
-			model.addAttribute("reviewEu", review.selectEu());
-			model.addAttribute("reviewAs", review.selectAs());
-			model.addAttribute("announce", announce.selectNew());
-			model.addAttribute("moment", blog.selectMomentByHome());
-			model.addAttribute("professor", professor.selectByWebHome());
-			model.addAttribute("reply", reply.selectByWebHome());
-			return "mobile";
-		} else {
-			model.addAttribute("blogko", blog.selectBlogKoByHome());
-			model.addAttribute("blogos", blog.selectBlogOsByHome());
-			model.addAttribute("reviewKe", review.selectKe());
-			model.addAttribute("reviewOz", review.selectOz());
-			model.addAttribute("reviewKo", review.selectKo());
-			model.addAttribute("reviewEa", review.selectEa());
-			model.addAttribute("reviewEu", review.selectEu());
-			model.addAttribute("reviewAs", review.selectAs());
-			model.addAttribute("announce", announce.selectNew());
-			model.addAttribute("moment", blog.selectMomentByHome());
-			model.addAttribute("professor", professor.selectByWebHome());
-			model.addAttribute("reply", reply.selectByWebHome());
-			return "index";
-		}
-		*/
-	}
-	
-	
-	
-	@RequestMapping(value="/mobile.do")
-	String mobile (HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
-		
-		String section = "all";
-		SearchDomain search = new SearchDomain();
-		search.setSearchSection(section);
-		model.addAttribute("message", "Hellow World");
-		//model.addAttribute("recruiting", recruit.selectTop4());
-		model.addAttribute("blogko", blog.selectBlogKoByHome());
-		model.addAttribute("blogos", blog.selectBlogOsByHome());
-		
-		model.addAttribute("reviewKe", review.selectKe());
-		model.addAttribute("reviewOz", review.selectOz());
-		model.addAttribute("reviewKo", review.selectKo());
-		model.addAttribute("reviewEa", review.selectEa());
-		model.addAttribute("reviewEu", review.selectEu());
-		model.addAttribute("reviewAs", review.selectAs());
+   
+   @Autowired
+   AuthService auth;
+   @Autowired
+   RecruitService recruit;
+   @Autowired
+   BlogService blog;
+   @Autowired
+   ReviewService review;
+   @Autowired
+   AnnounceService announce;
+   @Autowired
+   CounterService counter;
+   @Autowired
+   VanalyzerService vanalyzer;
+   @Autowired
+   ProfessorService professor;
+   @Autowired
+   IPBlockService ipblock;
+   @Autowired
+   ReplyService reply;
 
-		model.addAttribute("announce", announce.selectNew());
-		model.addAttribute("moment", blog.selectMomentByHome() );
-		
-		model.addAttribute("professor", professor.selectByWebHome());
-		
-		return "m";
-	}
-	
-	@RequestMapping(value="/landing.do")
-	String landing (HttpServletRequest request, HttpSession session, HttpServletResponse response, Model model) throws Exception {
-		if (session.getAttribute("wwwcrewfactorycom_lading_session") == null) {
-			session.setAttribute("wwwcrewfactorycom_lading_session", request.getRemoteAddr());;
-		}
-		model.addAttribute("reviewBest", review.selectBest());
-		model.addAttribute("professor", professor.selectByWebHome());
-		return "landing";
-	}
-	
-	@RequestMapping(value="/landingm.do")
-	String landingm (HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		model.addAttribute("reviewBest", review.selectBest());
-		model.addAttribute("professor", professor.selectByWebHome());
-		return "landingm";
-	}
-	
+   @RequestMapping({"/"})
+   String init(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
+      String userAgent = request.getHeader("User-Agent");
+      if (session.getAttribute("wwwcrewfactorycom_lading_session") != null) {
+         model.addAttribute("landing", "Y");
+      } else {
+         model.addAttribute("landing", "N");
+      }
+
+      if (userAgent.indexOf("iPhone") == -1 && userAgent.indexOf("iPad") == -1 && userAgent.indexOf("Android") == -1 && userAgent.indexOf("BlackBerry") == -1 && userAgent.indexOf("symbian") == -1 && userAgent.indexOf("sony") == -1 && userAgent.indexOf("Mobile") == -1) {
+         model.addAttribute("blogko", this.blog.selectBlogKoByHome());
+         model.addAttribute("blogos", this.blog.selectBlogOsByHome());
+         model.addAttribute("reviewKe", this.review.selectKe());
+         model.addAttribute("reviewOz", this.review.selectOz());
+         model.addAttribute("reviewKo", this.review.selectKo());
+         model.addAttribute("reviewEa", this.review.selectEa());
+         model.addAttribute("reviewEu", this.review.selectEu());
+         model.addAttribute("reviewAs", this.review.selectAs());
+         model.addAttribute("announce", this.announce.selectNew());
+         model.addAttribute("moment", this.blog.selectMomentByHome());
+         model.addAttribute("professor", this.professor.selectByWebHome());
+         model.addAttribute("reply", this.reply.selectByWebHome());
+         return "index";
+      } else {
+    	  model.addAttribute("blogko", this.blog.selectBlogKoByHome());
+          model.addAttribute("blogos", this.blog.selectBlogOsByHome());
+          model.addAttribute("reviewKe", this.review.selectKe());
+          model.addAttribute("reviewOz", this.review.selectOz());
+          model.addAttribute("reviewKo", this.review.selectKo());
+          model.addAttribute("reviewEa", this.review.selectEa());
+          model.addAttribute("reviewEu", this.review.selectEu());
+          model.addAttribute("reviewAs", this.review.selectAs());
+          model.addAttribute("announce", this.announce.selectNew());
+          model.addAttribute("moment", this.blog.selectMomentByHome());
+          model.addAttribute("professor", this.professor.selectByWebHome());
+          model.addAttribute("reply", this.reply.selectByWebHome());
+         return "mobile";
+      }
+   }
+
+   @RequestMapping({"/mobile.do"})
+   String mobile(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
+      String section = "all";
+      SearchDomain search = new SearchDomain();
+      search.setSearchSection(section);
+      model.addAttribute("message", "Hellow World");
+      model.addAttribute("blogko", this.blog.selectBlogKoByHome());
+      model.addAttribute("blogos", this.blog.selectBlogOsByHome());
+      model.addAttribute("reviewKe", this.review.selectKe());
+      model.addAttribute("reviewOz", this.review.selectOz());
+      model.addAttribute("reviewKo", this.review.selectKo());
+      model.addAttribute("reviewEa", this.review.selectEa());
+      model.addAttribute("reviewEu", this.review.selectEu());
+      model.addAttribute("reviewAs", this.review.selectAs());
+      model.addAttribute("announce", this.announce.selectNew());
+      model.addAttribute("moment", this.blog.selectMomentByHome());
+      model.addAttribute("professor", this.professor.selectByWebHome());
+      return "m";
+   }
+
+   @RequestMapping({"/landing.do"})
+   String landing(HttpServletRequest request, HttpSession session, HttpServletResponse response, Model model) throws Exception {
+      if (session.getAttribute("wwwcrewfactorycom_lading_session") == null) {
+         session.setAttribute("wwwcrewfactorycom_lading_session", request.getRemoteAddr());
+      }
+
+      model.addAttribute("reviewBest", this.review.selectBest());
+      model.addAttribute("professor", this.professor.selectByWebHome());
+      return "landing";
+   }
+
+   @RequestMapping({"/landingm.do"})
+   String landingm(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+      model.addAttribute("reviewBest", this.review.selectBest());
+      model.addAttribute("professor", this.professor.selectByWebHome());
+      return "landingm";
+   }
 }
